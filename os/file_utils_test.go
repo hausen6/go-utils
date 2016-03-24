@@ -41,9 +41,9 @@ func TestIsDir(t *testing.T) {
 func TestIsExecutable(t *testing.T) {
 	curExt, _ := osext.Executable()
 	testCase := map[string]bool{
-		"notExitCmd":    false,
-		"executable.py": true,
-		curExt:          true,
+		"notExitCmd": false,
+		curExt:       true,
+		"../os":      false, // director
 	}
 	for cmd, except := range testCase {
 		if result := IsExecutable(cmd); result != except {
