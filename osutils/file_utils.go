@@ -1,4 +1,4 @@
-package fileutils
+package osutils
 
 import (
 	"log"

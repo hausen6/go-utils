@@ -1,4 +1,4 @@
-package fileutils
+package osutils
 
 import (
 	"runtime"
@@ -13,7 +13,7 @@ func TestIsExist(t *testing.T) {
 		"file_utils_test.go":  true,
 		"not_exist_file.txt":  false,
 		"not_exist_file2.txt": false,
-		"../os":               true, // directory
+		"../osutils":          true, // directory
 	}
 
 	for filename, except := range testCase {
@@ -29,7 +29,7 @@ func TestIsDir(t *testing.T) {
 		"file_utils_test.go":  false, // file
 		"not_exist_file.txt":  false,
 		"not_exist_file2.txt": false,
-		"../os":               true, // directory
+		"../osutils":          true, // directory
 	}
 
 	for path, except := range testCase {
@@ -44,7 +44,7 @@ func TestIsExecutable(t *testing.T) {
 	testCase := map[string]bool{
 		"notExitCmd": false,
 		curExt:       true,
-		"../os":      false, // director
+		"../osutils": false, // director
 	}
 	for cmd, except := range testCase {
 		if result := IsExecutable(cmd); result != except {
