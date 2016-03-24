@@ -3,6 +3,7 @@ package fileutils
 import (
 	"log"
 	"os"
+	"path/filepath"
 	"runtime"
 
 	"github.com/mattn/go-colorable"
@@ -10,7 +11,7 @@ import (
 )
 
 var (
-	debug = log.New(colorable.NewColorableStdout(), "", log.Lshortfile)
+	debug = log.New(colorable.NewColorableStdout(), colorstring.Color("[green]"), log.Lshortfile)
 )
 
 // IsExists check the path exists or not.
@@ -42,6 +43,18 @@ func IsExecutable(filename string) bool {
 	}
 
 	info, _ := os.Stat(filename)
-	colorstring.Fprintf(colorable.NewColorableStdout(), "[green]DEBUG: [reset]%v: %v\n", filename, info.Mode())
 	return (info.Mode() & 0111) != 0
+}
+
+// FindExecutable is search out executable file in the PATH.
+func FindExecutable(filename string) string {
+	envpath := os.Getenv("PATH")
+	pathlist := filepath.SplitList(envpath)
+	for _, path := range pathlist {
+		file := filepath.Join(path, filename)
+		if IsExecutable(file) {
+			return file
+		}
+	}
+	return ""
 }

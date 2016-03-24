@@ -1,6 +1,7 @@
 package fileutils
 
 import (
+	"runtime"
 	"testing"
 
 	"github.com/kardianos/osext"
@@ -48,6 +49,27 @@ func TestIsExecutable(t *testing.T) {
 	for cmd, except := range testCase {
 		if result := IsExecutable(cmd); result != except {
 			t.Errorf("%v command excepts %v, but IsExecutable returns %v", cmd, except, result)
+		}
+	}
+}
+
+func TestFindExecutable(t *testing.T) {
+	testCase := make(map[string]bool)
+	if runtime.GOOS == "windows" {
+		testCase["go.exe"] = true
+		testCase["notExistCmd"] = false
+		testCase["notExistCmd2"] = false
+	} else {
+		testCase["go"] = true
+		testCase["notExistCmd"] = false
+		testCase["notExistCmd2"] = false
+	}
+
+	for cmd, except := range testCase {
+		if result := FindExecutable(cmd); (result != "") != except {
+			t.Errorf("%v command should be exists, but not found.", cmd)
+		} else if result != "" {
+			t.Log(result)
 		}
 	}
 }
